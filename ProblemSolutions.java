@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Jung Lee/ 001
  *
  *   This java file contains the problem solutions for the methods lastBoulder,
  *   showDuplicates, and pair methods. You should utilize the Java Collection
@@ -68,7 +68,31 @@ public class ProblemSolutions {
       //
       // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME / SECTION # ABOVE
       //
-      return -1;
+
+      // Initialize a max heap
+      PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+
+      // Add all boulders to the priority queue
+      for(int boulder : boulders) {
+        pq.add(boulder);
+      }
+
+      while (pq.size() > 1) {
+
+        // Get the heaviest boulder
+        int heaviest = pq.poll();
+
+        // Get the second heaviest boulder
+        int secondHeaviest = pq.poll();
+
+        // If they are not equal, push the difference back to the queue
+        if (heaviest != secondHeaviest) {
+            pq.add(heaviest - secondHeaviest);
+        }
+      }
+
+      // If there is a boulder left, return its weight; otherwise, return 0
+      return pq.isEmpty() ? 0 : pq.peek();
   }
 
 
@@ -94,7 +118,26 @@ public class ProblemSolutions {
         //
         //  YOUR CODE GOES HERE
         //
-        return new ArrayList<>();  // Make sure result is sorted in ascending order
+
+        HashMap<String, Integer> countMap = new HashMap<>();
+        ArrayList<String> result = new ArrayList<>();
+
+         // Count occurrences of each string
+        for (String s : input) {
+            countMap.put(s, countMap.getOrDefault(s, 0) + 1);
+        }
+
+        // Collect the strings that appear more than once
+        for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
+            if (entry.getValue() > 1) {
+                result.add(entry.getKey());
+            }
+        }
+
+        // Sort result in ascending order
+        Collections.sort(result);
+        
+        return result;  // Make sure result is sorted in ascending order
 
     }
 
@@ -134,6 +177,28 @@ public class ProblemSolutions {
         //
         //  YOUR CODE GOES HERE
         //
-        return new ArrayList<>();  // Make sure returned lists is sorted as indicated above
+
+        HashSet<Integer> seen = new HashSet<>();
+        ArrayList<String> result = new ArrayList<>();
+
+        // Find pairs that add up to k
+        for (int num : input) {
+            int complement = k - num;
+
+            // Check if the complement is in the set
+            if (seen.contains(complement)) {
+                // Order the pair (smallest, largest)
+                String pair = "(" + Math.min(num, complement) + ", " + Math.max(num, complement) + ")";
+                if (!result.contains(pair)) {
+                    result.add(pair);
+                }
+            }
+
+            // Add the current number to the set
+            seen.add(num);
+        }
+
+        Collections.sort(result);
+        return result;  // Make sure returned lists is sorted as indicated above
     }
 }

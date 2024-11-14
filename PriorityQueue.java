@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Jung Lee / 001
  *
  *   Note, additional comments provided throughout this source code
  *   is for educational purposes
@@ -152,7 +152,18 @@ class PriorityQueue<E, P> {
     public Node add(E e, P priority) {
 
         // YOUR CODE GOES HERE
-        return null;
+
+        //New node 
+        Node newNode = new Node(e, priority, tree.size());
+
+        //Add the node to the end of the tree
+        tree.add(newNode);
+
+        //Pull up to maintain min-heap property
+        pullUp(newNode.idx);
+
+        //Return new node 
+        return newNode;
     }
 
 
@@ -167,8 +178,17 @@ class PriorityQueue<E, P> {
      */
 
     public boolean contains(E e) {
-
         // ADD YOUR CODE HERE
+
+        //Iterate 
+        for (Node node : tree) {
+
+            //Check if the value matches and if it is valid or not
+            if (node.value.equals(e) && node.isValid()) {
+                return true;
+            }
+        }
+
         return false;
     }
 
